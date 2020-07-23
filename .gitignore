@@ -12,3 +12,12 @@ gradle-app.setting
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+
+log/
+out/
+.idea
+gradlew
+gradlew.bat
+gradle/
+libs/
+tmp/

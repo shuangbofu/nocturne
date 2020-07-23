@@ -1,0 +1,8 @@
+rootProject.name = 'nocturne'
+include 'nocturne-core'
+include 'nocturne-dao'
+include 'nocturne-web'
+include 'nocturne-executor'
+include 'nocturne-server'
+include 'nocturne-portocol'
+
