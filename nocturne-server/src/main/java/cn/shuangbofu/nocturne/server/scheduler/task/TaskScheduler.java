@@ -3,9 +3,9 @@ package cn.shuangbofu.nocturne.server.scheduler.task;
 import cn.shuangbofu.nocturne.core.observer.Event;
 import cn.shuangbofu.nocturne.server.dispatcher.TaskQueues;
 import cn.shuangbofu.nocturne.server.guice.Injectors;
-import cn.shuangbofu.nocturne.server.scheduler.event.ServerStopEvent;
 import cn.shuangbofu.nocturne.server.scheduler.ServerObserver;
 import cn.shuangbofu.nocturne.server.scheduler.event.ServerStartEvent;
+import cn.shuangbofu.nocturne.server.scheduler.event.ServerStopEvent;
 import com.google.common.eventbus.Subscribe;
 
 /**

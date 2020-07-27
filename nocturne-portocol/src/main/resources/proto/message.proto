@@ -1,0 +1,13 @@
+syntax = "proto3";
+// 生成的包名
+option java_package = "cn.shuangbofu.nocturne.protobuf";
+//生成的java名
+option java_outer_classname = "MessageProto";
+
+import "message_type.proto";
+
+message Message {
+    MessageType type = 1;
+    sint32 reqId = 2;
+    bytes data = 3;
+}

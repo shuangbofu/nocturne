@@ -1,0 +1,15 @@
+syntax = "proto3";
+// 生成的包名
+option java_package = "cn.shuangbofu.nocturne.protobuf";
+//生成的java名
+option java_outer_classname = "TaskProto";
+
+// 执行器注册
+message SubmitTaskRequest {
+    uint64 taskId = 1;
+    string content = 2;
+}
+
+message SubmitTaskResponse {
+    bool accept = 1;
+}

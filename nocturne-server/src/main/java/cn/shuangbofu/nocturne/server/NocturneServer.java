@@ -1,17 +1,15 @@
 package cn.shuangbofu.nocturne.server;
 
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import akka.routing.RoundRobinPool;
-import cn.shuangbofu.nocturne.core.NocturneConstants;
-import cn.shuangbofu.nocturne.server.actor.ServerActor;
-import cn.shuangbofu.nocturne.server.guice.Injectors;
-import cn.shuangbofu.nocturne.server.scheduler.GlobalController;
-import cn.shuangbofu.nocturne.server.scheduler.task.TaskRetryScheduler;
+import cn.shuangbofu.nocturne.core.netty.channel.RequestChannel;
+import cn.shuangbofu.nocturne.core.netty.event.Event;
+import cn.shuangbofu.nocturne.core.netty.server.NettyServer;
 import cn.shuangbofu.nocturne.server.alarm.AlarmEmitter;
 import cn.shuangbofu.nocturne.server.dispatcher.TaskDisptacher;
+import cn.shuangbofu.nocturne.server.scheduler.GlobalController;
 import cn.shuangbofu.nocturne.server.scheduler.event.ServerStartEvent;
+import cn.shuangbofu.nocturne.server.scheduler.task.TaskRetryScheduler;
 import cn.shuangbofu.nocturne.server.scheduler.task.TaskScheduler;
+import cn.shuangbofu.nocturne.server.service.ExecutorStore;
 import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,19 +26,21 @@ public class NocturneServer {
 
     public static void main(String[] args) {
         try {
+            int port = Integer.parseInt(args[0]);
+            new NettyServer()
+                    .listen(Event.UNREGISTER, NocturneServer::executorDisconnect)
+                    .onReceive(new ServerHandlerSet())
+                    .start(port);
+
             // TODO 开启服务
-            // NETTY OR AKKA
-            ActorSystem actorSystem = Injectors.getInstance(ActorSystem.class);
-            actorSystem.actorOf(
-                    Props.create(ServerActor.class).withRouter(new RoundRobinPool(500)),
-                    NocturneConstants.SERVER_AKKA_SYSTEM_NAME);
 
             TaskDisptacher.INSTANCE.start(DISPATCHER_THREAD_NUM);
             TaskRetryScheduler.INSTANCE.start(REJECT_RETRY_INTERVAL, AUTO_RETRY_INTERVAL);
             // 指标metric
 
-            // 注册所有观察者，
+            // 注册所有观察者
             initAllObserver();
+            LOGGER.info("服务启动完毕！");
         } catch (Exception e) {
             Throwables.propagate(e);
         }
@@ -51,5 +51,10 @@ public class NocturneServer {
         controller.register(TaskScheduler.getInstance());
         controller.register(AlarmEmitter.getInstance());
         controller.notify(new ServerStartEvent());
+    }
+
+    public static void executorDisconnect(RequestChannel channel) {
+        LOGGER.info("executor断开连接，server做一些操作！");
+        ExecutorStore.INSTANCE.unregister(channel);
     }
 }

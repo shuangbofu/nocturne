@@ -1,8 +1,5 @@
 package cn.shuangbofu.nocturne.server.guice;
 
-import akka.actor.ActorSystem;
-import cn.shuangbofu.nocturne.core.NocturneConstants;
-import cn.shuangbofu.nocturne.core.utils.ConfigUtil;
 import cn.shuangbofu.nocturne.server.dispatcher.selector.ExecutorSelector;
 import cn.shuangbofu.nocturne.server.dispatcher.selector.RoundRobinExecutorSelector;
 import com.google.inject.AbstractModule;
@@ -23,8 +20,6 @@ public class GuiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(ActorSystem.class).toInstance(
-                ActorSystem.create(NocturneConstants.SERVER_AKKA_SYSTEM_NAME,
-                ConfigUtil.getAkkaConfig("akka-server.config")));
+
     }
 }

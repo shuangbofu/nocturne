@@ -6,7 +6,6 @@ import cn.shuangbofu.nocturne.core.utils.DTUtil;
 import com.google.common.collect.Lists;
 import com.google.inject.Singleton;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -65,6 +64,7 @@ public class TaskQueues implements TaskQueue {
 
     /**
      * 轮询
+     *
      * @param queueList
      * @return
      */

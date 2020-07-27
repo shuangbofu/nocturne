@@ -1,0 +1,10 @@
+syntax = "proto3";
+// 生成的包名
+option java_package = "cn.shuangbofu.nocturne.protobuf";
+//生成的java名
+option java_outer_classname = "ExecutorProto";
+
+// 执行器注册
+message ExecutorRegistry {
+    int32 groupId = 1;
+}

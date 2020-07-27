@@ -39,7 +39,7 @@ public enum TaskRetryScheduler {
         executorService.shutdown();
         LOGGER.info("Task retry scheduler started.");
         this.rejectRetryInterval = rejectRetryInterval;
-        this.autoRetryInterval= autoRetryInterval;
+        this.autoRetryInterval = autoRetryInterval;
     }
 
     public void shutdown() {

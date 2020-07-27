@@ -1,6 +1,6 @@
 package cn.shuangbofu.nocturne.server.dispatcher;
 
-import cn.shuangbofu.nocturne.core.domain.ExecutorInfo;
+import cn.shuangbofu.nocturne.core.domain.ExecutorEntry;
 import cn.shuangbofu.nocturne.core.domain.RetryType;
 import cn.shuangbofu.nocturne.core.domain.TaskInfo;
 import cn.shuangbofu.nocturne.server.dispatcher.selector.ExecutorSelector;
@@ -48,10 +48,10 @@ public enum TaskDisptacher {
                 return;
             }
             long executorGroupId = info.getExecutorGroupId();
-            ExecutorInfo executorInfo = executorSelector.select(executorGroupId);
+            ExecutorEntry entry = executorSelector.select(executorGroupId);
 
             // 没有可用executor重试
-            if (executorInfo == null) {
+            if (entry == null) {
                 TaskRetryScheduler.INSTANCE.addTask(info, RetryType.AUTO);
             }
 
