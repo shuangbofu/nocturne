@@ -1,4 +1,4 @@
-package cn.shuangbofu.nocturne.server;
+package cn.shuangbofu.nocturne.server.handler;
 
 import cn.shuangbofu.nocturne.core.Constants;
 import cn.shuangbofu.nocturne.core.netty.annotation.OnReceive;

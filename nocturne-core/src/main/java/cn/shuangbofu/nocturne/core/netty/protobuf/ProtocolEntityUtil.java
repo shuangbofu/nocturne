@@ -76,6 +76,7 @@ public class ProtocolEntityUtil {
     }
 
     public static void init2() throws NoSuchMethodException {
+        // 手动维护关系
         CLASS_ENUM_MAPPING_CACHE.put(ResponseProto.Response.class, MessageType.response);
         CLASS_ENUM_MAPPING_CACHE.put(HeartBeatProto.HeartBeatRequest.class, MessageType.heartBeat);
         CLASS_ENUM_MAPPING_CACHE.put(ExecutorProto.ExecutorRegistry.class, MessageType.executorRegistry);

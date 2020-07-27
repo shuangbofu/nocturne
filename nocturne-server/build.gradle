@@ -12,5 +12,6 @@ repositories {
 dependencies {
     compile group: 'com.google.inject', name: 'guice', version: '4.2.3'
     compile project(':nocturne-core')
+    compile project(':nocturne-dao')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
