@@ -66,6 +66,18 @@ public class RequestChannel extends AbstractChannel {
         }
     }
 
+    public void req(MessageLite messageLite) {
+        int reqId = REQ_ID_COUNTER.getAndIncrement();
+        ChannelFuture future = request0(reqId, messageLite);
+        try {
+            if (!future.await(5, TimeUnit.SECONDS)) {
+                throw new RuntimeException("请求超时");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

@@ -15,8 +15,10 @@ dependencies {
 
     compile 'io.netty:netty-all:4.1.48.Final'
     compile 'com.google.guava:guava:27.1-jre'
-    compile 'org.apache.commons:commons-lang3:3.11'
-    compile project(':nocturne-portocol')
+    compile 'org.apache.commons:commons-configuration2:2.7'
+    compile 'commons-beanutils:commons-beanutils:1.9.4'
+    compile 'org.yaml:snakeyaml:1.26'
+    compile project(':nocturne-protocol')
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 

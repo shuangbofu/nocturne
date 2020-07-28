@@ -27,13 +27,13 @@ public class WebApp {
                 new NettyClient()
                         .setReconnect(1, TimeUnit.MINUTES)
                         .onReceive(WebHandlerSet.getInstance())
-                        .listen(Event.CONNECTED, channel -> ServerClient.get().register(channel, serverKey))
-                        .connect(ip, port)
-                ;
+                        .onReceive(ServerClient.getInstance())
+                        .listen(Event.CONNECTED, channel -> ServerClient.getInstance().register(channel, serverKey))
+                        .connect(ip, port);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-        }).start()
+        })
                 .get("/", ctx -> ctx.text("Hello Blade"))
                 .start();
     }

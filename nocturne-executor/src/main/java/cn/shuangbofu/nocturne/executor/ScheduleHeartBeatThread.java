@@ -1,6 +1,7 @@
 package cn.shuangbofu.nocturne.executor;
 
 import cn.shuangbofu.nocturne.core.NamedThreadFactory;
+import cn.shuangbofu.nocturne.core.constant.ConfigKeys;
 import cn.shuangbofu.nocturne.core.constant.Constants;
 import cn.shuangbofu.nocturne.core.netty.channel.RequestChannel;
 import cn.shuangbofu.nocturne.core.netty.message.ResponseMessage;
@@ -20,12 +21,8 @@ public enum ScheduleHeartBeatThread {
      *
      */
     INSTANCE;
-    private static final int HEART_BEAT_PERIOD_SECONDS = 4;
 
     // TODO 从配置或者其他地方获取
-
-    private static final int GROUP_ID = 1;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleHeartBeatThread.class);
     RequestChannel channel;
     ScheduledExecutorService scheduledExecutor;
@@ -50,7 +47,7 @@ public enum ScheduleHeartBeatThread {
             } catch (Exception e) {
                 LOGGER.error("心跳异常", e);
             }
-        }, 0, HEART_BEAT_PERIOD_SECONDS, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
     public void shutdown() {
@@ -63,7 +60,9 @@ public enum ScheduleHeartBeatThread {
 
     private void register() {
         LOGGER.info("发送注册信息……");
-        boolean register = channel.request(RequestFactory.executorRegistry(GROUP_ID))
+        String serverKey = ExecutorServer.CONFIG.getString(ConfigKeys.NOCTURNE_SERVER_KEY);
+        String executorKey = ExecutorServer.CONFIG.getString(ConfigKeys.NOCTURNE_EXECUTOR_KEY);
+        boolean register = channel.request(RequestFactory.executorRegistry(serverKey, executorKey))
                 .getData(Boolean.class);
         if (register) {
             LOGGER.info("收到服务端返回，注册成功！");

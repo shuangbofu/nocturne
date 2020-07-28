@@ -1,7 +1,9 @@
 package cn.shuangbofu.nocturne.server.service;
 
+import cn.shuangbofu.nocturne.core.constant.ConfigKeys;
 import cn.shuangbofu.nocturne.core.domain.ExecutorEntry;
 import cn.shuangbofu.nocturne.core.netty.channel.RequestChannel;
+import cn.shuangbofu.nocturne.server.NocturneServer;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
@@ -30,7 +32,14 @@ public enum ExecutorStore {
     private final Map<Integer, Cache<ExecutorEntry, List<Long>>> CACHES = Maps.newConcurrentMap();
     private final Set<ExecutorEntry> OFFLINE_EXECUTORS = Sets.newConcurrentHashSet();
 
-    public void register(RequestChannel channel, int groupId) {
+    public void register(RequestChannel channel, String serverKey, String executorKey) {
+        String key = NocturneServer.CONFIG.getString(ConfigKeys.NOCTURNE_SERVER_KEY);
+        if (!key.equals(serverKey)) {
+            throw new RuntimeException("server key not supported");
+        }
+        // TODO 根据 executorKey get GroupId
+        int groupId = executorKey.hashCode();
+
         ExecutorEntry executorEntry = new ExecutorEntry(channel, groupId);
         executorEntries.put(channel, executorEntry);
         LOGGER.info("Executor({})注册！", executorEntry);
@@ -60,8 +69,10 @@ public enum ExecutorStore {
 
     public void unregister(RequestChannel channel) {
         ExecutorEntry removed = executorEntries.remove(channel);
-        LOGGER.info("Executor({})注销！", removed);
-        printAll();
+        if (removed != null) {
+            LOGGER.info("Executor({})注销！", removed);
+            printAll();
+        }
     }
 
     public void printAll() {

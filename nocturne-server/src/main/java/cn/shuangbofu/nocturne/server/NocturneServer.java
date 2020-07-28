@@ -1,17 +1,20 @@
 package cn.shuangbofu.nocturne.server;
 
+import cn.shuangbofu.nocturne.core.constant.ConfigKeys;
 import cn.shuangbofu.nocturne.core.netty.channel.RequestChannel;
 import cn.shuangbofu.nocturne.core.netty.event.Event;
 import cn.shuangbofu.nocturne.core.netty.server.NettyServer;
+import cn.shuangbofu.nocturne.core.utils.ConfigUtil;
+import cn.shuangbofu.nocturne.protobuf.WebServerProto;
 import cn.shuangbofu.nocturne.server.alarm.AlarmEmitter;
-import cn.shuangbofu.nocturne.server.dispatcher.TaskDisptacher;
-import cn.shuangbofu.nocturne.server.handler.ServerHandlerSet;
+import cn.shuangbofu.nocturne.server.handler.FromExecutorHandlerSet;
 import cn.shuangbofu.nocturne.server.scheduler.GlobalController;
 import cn.shuangbofu.nocturne.server.scheduler.event.ServerStartEvent;
 import cn.shuangbofu.nocturne.server.scheduler.task.TaskRetryScheduler;
 import cn.shuangbofu.nocturne.server.scheduler.task.TaskScheduler;
 import cn.shuangbofu.nocturne.server.service.ExecutorStore;
 import com.google.common.base.Throwables;
+import org.apache.commons.configuration2.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,23 +25,24 @@ import static cn.shuangbofu.nocturne.core.constant.Constants.*;
  */
 public class NocturneServer {
 
+    public static final Configuration CONFIG = ConfigUtil.getConfig("server.yaml");
     private static final Logger LOGGER = LoggerFactory.getLogger(NocturneServer.class);
 
     public static void main(String[] args) {
         try {
-            int port = SERVER_DEFAULT_PORT;
-            if (args.length > 0) {
-                port = Integer.parseInt(args[0]);
-            }
-
+            int port = CONFIG.getInt(ConfigKeys.NOCTURNE_SERVER_PORT, SERVER_DEFAULT_PORT);
             new NettyServer()
                     .listen(Event.UNREGISTER, NocturneServer::executorDisconnect)
-                    .onReceive(new ServerHandlerSet())
+                    // 处理来自executor的消息
+                    .onReceive(new FromExecutorHandlerSet())
+                    // web初始化相关
+                    .onReceive(WebServerProto.WebServerRegistry.class, (m, c) -> c.success(true))
+                    .onReceive(HeartBeatThread.INSTANCE)
                     .start(port);
 
             // TODO 开启服务
 
-            TaskDisptacher.INSTANCE.start(DISPATCHER_THREAD_NUM);
+//            TaskDisptacher.INSTANCE.start(DISPATCHER_THREAD_NUM);
             TaskRetryScheduler.INSTANCE.start(REJECT_RETRY_INTERVAL, AUTO_RETRY_INTERVAL);
             // 指标metric
 

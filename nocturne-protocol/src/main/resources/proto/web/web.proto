@@ -1,0 +1,14 @@
+syntax = "proto3";
+// 生成的包名
+option java_package = "cn.shuangbofu.nocturne.protobuf";
+//生成的java名
+option java_outer_classname = "WebServerProto";
+
+// web服务注册
+message WebServerRegistry {
+    string serverKey = 1;
+}
+
+message WebServerHeartbeatRequest {
+
+}

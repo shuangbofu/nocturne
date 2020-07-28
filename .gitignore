@@ -21,3 +21,4 @@ gradlew.bat
 gradle/
 libs/
 tmp/
+./build/*

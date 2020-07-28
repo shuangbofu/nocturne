@@ -4,11 +4,8 @@ import cn.shuangbofu.nocturne.core.constant.Constants;
 import cn.shuangbofu.nocturne.core.netty.message.ReceivedMessage;
 import cn.shuangbofu.nocturne.core.netty.message.ResponseMessage;
 import cn.shuangbofu.nocturne.protobuf.ExecutorProto.ExecutorRegistry;
+import cn.shuangbofu.nocturne.protobuf.*;
 import cn.shuangbofu.nocturne.protobuf.HeartBeatProto.HeartBeatRequest;
-import cn.shuangbofu.nocturne.protobuf.MessageProto;
-import cn.shuangbofu.nocturne.protobuf.MessageTypeProto;
-import cn.shuangbofu.nocturne.protobuf.ResponseProto;
-import cn.shuangbofu.nocturne.protobuf.TaskProto;
 
 import java.util.List;
 
@@ -17,9 +14,17 @@ import java.util.List;
  */
 public class RequestFactory {
 
-    public static ExecutorRegistry executorRegistry(int groupId) {
+    public static HeartBeatProto.ServerHeartBeat SERVER2WEB_PING = HeartBeatProto.ServerHeartBeat.newBuilder().setMsg(Constants.PING).build();
+    public static WebServerProto.WebServerHeartbeatRequest HEARTBEAT_REQUEST2_SERVER = WebServerProto.WebServerHeartbeatRequest.newBuilder().build();
+
+    public static WebServerProto.WebServerRegistry webRegistry(String serverKey) {
+        return WebServerProto.WebServerRegistry.newBuilder().setServerKey(serverKey).build();
+    }
+
+    public static ExecutorRegistry executorRegistry(String serverKey, String executorKey) {
         return ExecutorRegistry.newBuilder()
-                .setGroupId(groupId)
+                .setServerKey(serverKey)
+                .setExecutorKey(executorKey)
                 .build();
     }
 

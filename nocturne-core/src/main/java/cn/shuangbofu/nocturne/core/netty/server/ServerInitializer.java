@@ -31,9 +31,12 @@ public abstract class ServerInitializer<S> {
                         onReceive(receivedMessageClass, ((message, responseChannel) -> {
                             try {
                                 Object invoke = method.invoke(initializer, message.getInnerEntity(), responseChannel);
+                                if ("void".equals(method.getReturnType().getName())) {
+                                    responseChannel.success(true);
+                                }
                                 responseChannel.success(invoke);
                             } catch (IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
+                                responseChannel.error(e.getMessage());
                             }
                         }));
                     }
@@ -48,7 +51,6 @@ public abstract class ServerInitializer<S> {
         getListener().addMessageHandlers(clazz, handlers);
         return (S) this;
     }
-
 
     public S listen(Event event, EventHandler handler) {
         getListener().addEventListener(event, handler);
