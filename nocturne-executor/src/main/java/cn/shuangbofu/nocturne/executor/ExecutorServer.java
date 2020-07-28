@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * Created by shuangbofu on 2020/7/23 13:27
  */
 public class ExecutorServer {
-    public static final Configuration CONFIG = ConfigUtil.getConfig("executor.yml");
+    public static final Configuration CONFIG = ConfigUtil.getConfig("executor.yaml");
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecutorServer.class);
 
     public static void main(String[] args) throws InterruptedException {

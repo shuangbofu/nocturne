@@ -31,17 +31,15 @@ public class NocturneServer {
     public static void main(String[] args) {
         try {
             int port = CONFIG.getInt(ConfigKeys.NOCTURNE_SERVER_PORT, SERVER_DEFAULT_PORT);
+            // 开启服务
             new NettyServer()
-                    .listen(Event.UNREGISTER, NocturneServer::executorDisconnect)
+                    .listen(Event.UNREGISTER, NocturneServer::disConnect)
                     // 处理来自executor的消息
                     .onReceive(new FromExecutorHandlerSet())
                     // web初始化相关
                     .onReceive(WebServerProto.WebServerRegistry.class, (m, c) -> c.success(true))
                     .onReceive(HeartBeatThread.INSTANCE)
                     .start(port);
-
-            // TODO 开启服务
-
 //            TaskDisptacher.INSTANCE.start(DISPATCHER_THREAD_NUM);
             TaskRetryScheduler.INSTANCE.start(REJECT_RETRY_INTERVAL, AUTO_RETRY_INTERVAL);
             // 指标metric
@@ -61,8 +59,7 @@ public class NocturneServer {
         controller.notify(new ServerStartEvent());
     }
 
-    public static void executorDisconnect(RequestChannel channel) {
-        LOGGER.info("executor断开连接，server做一些操作！");
+    public static void disConnect(RequestChannel channel) {
         ExecutorStore.INSTANCE.unregister(channel);
     }
 }
