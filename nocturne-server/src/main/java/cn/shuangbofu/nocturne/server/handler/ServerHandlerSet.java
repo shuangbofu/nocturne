@@ -1,6 +1,6 @@
 package cn.shuangbofu.nocturne.server.handler;
 
-import cn.shuangbofu.nocturne.core.Constants;
+import cn.shuangbofu.nocturne.core.constant.Constants;
 import cn.shuangbofu.nocturne.core.netty.annotation.OnReceive;
 import cn.shuangbofu.nocturne.core.netty.channel.RequestChannel;
 import cn.shuangbofu.nocturne.protobuf.ExecutorProto;

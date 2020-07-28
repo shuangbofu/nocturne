@@ -1,7 +1,7 @@
 package cn.shuangbofu.nocturne.server.guice;
 
 import cn.shuangbofu.nocturne.server.dispatcher.selector.ExecutorSelector;
-import cn.shuangbofu.nocturne.server.dispatcher.selector.RoundRobinExecutorSelector;
+import cn.shuangbofu.nocturne.server.dispatcher.selector.RandomExecutorSelector;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
@@ -15,7 +15,8 @@ public class GuiceModule extends AbstractModule {
     @Singleton
     private ExecutorSelector provideExecutorSelector() {
         // TODO 根据配置
-        return new RoundRobinExecutorSelector();
+//        return new RoundRobinExecutorSelector();
+        return new RandomExecutorSelector();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package cn.shuangbofu.nocturne.core.netty.protobuf;
 
-import cn.shuangbofu.nocturne.core.Constants;
+import cn.shuangbofu.nocturne.core.constant.Constants;
 import cn.shuangbofu.nocturne.core.netty.message.ReceivedMessage;
 import cn.shuangbofu.nocturne.core.netty.message.ResponseMessage;
 import cn.shuangbofu.nocturne.protobuf.ExecutorProto.ExecutorRegistry;
@@ -30,9 +30,9 @@ public class RequestFactory {
                 .build();
     }
 
-    public static TaskProto.SubmitTaskRequest submitTaskRequest(long id, String content) {
+    public static TaskProto.SubmitTaskRequest submitTaskRequest(String id, String content) {
         return TaskProto.SubmitTaskRequest.newBuilder()
-                .setTaskId(id)
+                .setTaskId(Long.parseLong(id))
                 .setContent(content)
                 .build();
     }

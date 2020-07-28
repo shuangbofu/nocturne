@@ -13,8 +13,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
-    compile 'io.netty:netty-all:4.1.12.Final'
+    compile 'io.netty:netty-all:4.1.48.Final'
     compile 'com.google.guava:guava:27.1-jre'
+    compile 'org.apache.commons:commons-lang3:3.11'
     compile project(':nocturne-portocol')
 
     testCompile group: 'junit', name: 'junit', version: '4.12'

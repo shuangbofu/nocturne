@@ -15,19 +15,22 @@ import com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static cn.shuangbofu.nocturne.core.constant.Constants.*;
+
 /**
  * Created by shuangbofu on 2020/7/22 10:51
  */
 public class NocturneServer {
-    private static final int DISPATCHER_THREAD_NUM = 2;
-    private static final int REJECT_RETRY_INTERVAL = 3;
-    private static final int AUTO_RETRY_INTERVAL = 4;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NocturneServer.class);
 
     public static void main(String[] args) {
         try {
-            int port = Integer.parseInt(args[0]);
+            int port = SERVER_DEFAULT_PORT;
+            if (args.length > 0) {
+                port = Integer.parseInt(args[0]);
+            }
+
             new NettyServer()
                     .listen(Event.UNREGISTER, NocturneServer::executorDisconnect)
                     .onReceive(new ServerHandlerSet())

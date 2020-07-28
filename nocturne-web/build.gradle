@@ -10,5 +10,10 @@ repositories {
 }
 
 dependencies {
+    compile('com.bladejava:blade-mvc:2.0.15.RELEASE') {
+        exclude group: 'com.bladejava', module: 'blade-log'
+    }
+    compile project(':nocturne-core')
+    compile project(':nocturne-dao')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
