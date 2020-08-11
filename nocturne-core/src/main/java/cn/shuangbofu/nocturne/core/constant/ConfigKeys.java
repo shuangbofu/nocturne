@@ -9,4 +9,8 @@ public interface ConfigKeys {
     String NOCTURNE_SERVER_KEY = "nocturne.server.key";
 
     String NOCTURNE_EXECUTOR_KEY = "nocturne.executor.key";
+
+    String JDBC_URL = "jdbc.url";
+    String JDBC_USERNAME = "jdbc.username";
+    String JDBC_PASSWORD = "jdbc.password";
 }
